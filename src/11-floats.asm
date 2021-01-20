@@ -16,13 +16,13 @@ section .data
     results:			db "%.2lf'C =  %.2lf K = %.2lf'F",10,0
     toosmallerror:	db "Error: provided value is too small.",10,0
     align 16
-    absolutezero:	dq -273.15
-    CtoFmultiplier:	dq 1.8
-    CtoFoffset:		dq 32.0
+    absolutezero:	dd -273.15
+    CtoFmultiplier:	dd 1.8
+    CtoFoffset:		dd 32.0
 
 section .bss
     align 16
-    tempC:			resq 1
+    tempC:			resd 1
 
 section .text
 global _start
@@ -36,15 +36,15 @@ _start:
     xor rax, rax
     call scanf
 
-    movsd xmm0,[tempC]
-    movsd xmm2,[absolutezero]
+    movss xmm0,[tempC]
+    movss xmm2,[absolutezero]
     ucomisd xmm0, xmm2
     jb error
 
-    movsd xmm1,xmm0
+    movss xmm1,xmm0
     subsd xmm1,xmm2
 
-    movsd xmm2, [tempC]
+    movss xmm2, [tempC]
     mulsd xmm2, [CtoFmultiplier]
     addsd xmm2, [CtoFoffset]
     
